@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Database, KeySquare, LayoutGrid, Users } from 'lucide-react';
+import { BookOpen, Database, Grid, KeySquare, LayoutGrid, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -41,6 +41,21 @@ export function AppSidebar() {
 
       <SidebarContent className="space-y-4">
         <NavMain items={mainNavItems} label="Dashboard" />
+        <NavMain
+          items={[
+            {
+              title: 'Product category',
+              href: route('category.index'),
+              icon: Grid,
+            },
+            {
+              title: 'Product lists',
+              href: route('product.index'),
+              icon: Grid,
+            },
+          ]}
+          label="Products"
+        />
         <NavMain
           items={[
             {

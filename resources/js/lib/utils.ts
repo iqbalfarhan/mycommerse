@@ -117,3 +117,10 @@ export function formatRupiah(angka: number): string {
     minimumFractionDigits: 0,
   }).format(angka);
 }
+
+export function numberTrim(number: number, max: number = 99): string {
+  if (number > max) {
+    return `${max}+`;
+  }
+  return number.toString();
+}
