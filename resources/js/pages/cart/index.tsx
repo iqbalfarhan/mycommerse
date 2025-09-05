@@ -15,7 +15,6 @@ import { LogIn, Minus, Plus, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import CartBulkDeleteDialog from './components/cart-bulk-delete-dialog';
 import CartDeleteDialog from './components/cart-delete-dialog';
-import CartFormSheet from './components/cart-form-sheet';
 
 type Props = {
   carts: Cart[];
@@ -39,22 +38,7 @@ const CartList: FC<Props> = ({ carts }) => {
     }, 0);
 
   return (
-    <AppLayout
-      title="Carts"
-      description="Manage your carts"
-      actions={
-        <>
-          {permissions?.canAdd && (
-            <CartFormSheet purpose="create">
-              <Button>
-                <Plus />
-                Create new cart
-              </Button>
-            </CartFormSheet>
-          )}
-        </>
-      }
-    >
+    <AppLayout title="Carts" description="Manage your carts">
       <div className="flex gap-2">
         <Input placeholder="Search carts..." value={cari} onChange={(e) => setCari(e.target.value)} />
         {ids.length > 0 && (

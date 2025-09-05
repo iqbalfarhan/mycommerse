@@ -11,6 +11,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CourierController;
+
 
 
 
@@ -46,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('cart/bulk', [CartController::class, 'bulkUpdate'])->name('cart.bulk.update');
     Route::delete('cart/bulk', [CartController::class, 'bulkDelete'])->name('cart.bulk.destroy');
     Route::apiResource('cart', CartController::class);
+    Route::put('courier/bulk', [CourierController::class, 'bulkUpdate'])->name('courier.bulk.update');
+    Route::delete('courier/bulk', [CourierController::class, 'bulkDelete'])->name('courier.bulk.destroy');
+    Route::apiResource('courier', CourierController::class);
 });
 
 require __DIR__.'/settings.php';
