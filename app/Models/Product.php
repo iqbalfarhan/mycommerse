@@ -37,6 +37,10 @@ class Product extends Model implements HasMedia
         'updated_at',
     ];
 
+    public $appends = [
+        'thumbnail'
+    ];
+
     /**
      * Register media conversions.
      */

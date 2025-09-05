@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -5,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { formatRupiah } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Product } from '@/types/product';
 import { Link, usePage } from '@inertiajs/react';
@@ -112,6 +114,9 @@ const ProductList: FC<Props> = ({ products, query }) => {
                 </Button>
               </TableHead>
               <TableHead>Name</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Stock</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -136,7 +141,17 @@ const ProductList: FC<Props> = ({ products, query }) => {
                       </Label>
                     </Button>
                   </TableCell>
-                  <TableCell>{product.name}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Avatar>
+                        <AvatarImage src={product.thumbnail} />
+                      </Avatar>
+                      <div>{product.name}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{product.category.name}</TableCell>
+                  <TableCell>{formatRupiah(product.price)}</TableCell>
+                  <TableCell>{product.stock}</TableCell>
                   <TableCell>
                     {permissions?.canShow && (
                       <Button variant={'ghost'} size={'icon'}>

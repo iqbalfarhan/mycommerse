@@ -1,8 +1,10 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { Cart } from './cart';
 
 export interface Auth {
   user: User;
+  carts: Cart[];
   roles: string[];
 }
 

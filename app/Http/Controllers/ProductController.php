@@ -31,6 +31,7 @@ class ProductController extends Controller
         return Inertia::render('product/index', [
             'products' => $data->get(),
             'query' => $request->input(),
+            'categories' => Category::get(),
             'permissions' => [
                 'canAdd' => $this->user->can("create product"),
                 'canShow' => $this->user->can("show product"),

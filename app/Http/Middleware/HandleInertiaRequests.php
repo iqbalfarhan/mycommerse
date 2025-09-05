@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames(),
+                'carts' => $request->user()?->carts,
             ],
             'menus' => [
                 "user" => $user?->can('menu user'),

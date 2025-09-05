@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+
 
 
 
@@ -29,7 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::apiResource('role', RoleController::class);
     Route::apiResource('permission', PermissionController::class);
-    Route::apiResource('media', MediaController::class);
+    Route::apiResource('media-library', MediaController::class);
+
     Route::put('category/bulk', [CategoryController::class, 'bulkUpdate'])->name('category.bulk.update');
     Route::delete('category/bulk', [CategoryController::class, 'bulkDelete'])->name('category.bulk.destroy');
     Route::apiResource('category', CategoryController::class);
@@ -40,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('product/{product}/force-delete', [ProductController::class, 'forceDelete'])->name('product.force-delete');
     Route::post('product/{product}/upload-media', [ProductController::class, 'uploadMedia'])->name('product.upload-media');
     Route::apiResource('product', ProductController::class);
+    Route::put('cart/bulk', [CartController::class, 'bulkUpdate'])->name('cart.bulk.update');
+    Route::delete('cart/bulk', [CartController::class, 'bulkDelete'])->name('cart.bulk.destroy');
+    Route::apiResource('cart', CartController::class);
 });
 
 require __DIR__.'/settings.php';
