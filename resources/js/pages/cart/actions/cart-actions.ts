@@ -12,7 +12,13 @@ export const addToCart = (product: Product, qty: number = 1) => {
     },
     {
       preserveScroll: true,
-      onSuccess: () => toast.success('Product added to cart'),
+      onSuccess: () =>
+        toast.success('Product added to cart', {
+          action: {
+            label: 'Keranjang',
+            onClick: () => router.visit(route('cart.index')),
+          },
+        }),
       onError: (e) => toast.error(em(e)),
     },
   );

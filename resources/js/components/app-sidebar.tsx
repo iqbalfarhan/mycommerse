@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Bike, BookOpen, Box, Database, Grid2X2Check, KeySquare, LayoutGrid, ShoppingCart, Users } from 'lucide-react';
+import { Bike, BookOpen, Box, Database, Grid2X2Check, KeySquare, LayoutGrid, ShoppingCart, Users, Wallet } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,11 +17,6 @@ const mainNavItems: NavItem[] = [
     title: 'Documentation',
     href: route('documentation'),
     icon: BookOpen,
-  },
-  {
-    title: 'Keranjang belanja',
-    href: route('cart.index'),
-    icon: ShoppingCart,
   },
 ];
 
@@ -45,23 +40,43 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="space-y-4">
-        <NavMain items={mainNavItems} label="Dashboard" />
+        <NavMain
+          items={[
+            ...mainNavItems,
+            {
+              title: 'Keranjang belanja',
+              href: route('cart.index'),
+              icon: ShoppingCart,
+              available: menus.cart,
+            },
+            {
+              title: 'Riwayat belanja',
+              href: route('transaction.index'),
+              icon: Wallet,
+              available: menus.transaction,
+            },
+          ]}
+          label="Dashboard"
+        />
         <NavMain
           items={[
             {
               title: 'Product category',
               href: route('category.index'),
               icon: Grid2X2Check,
+              available: menus.category,
             },
             {
               title: 'Product lists',
               href: route('product.index'),
               icon: Box,
+              available: menus.product,
             },
             {
               title: 'Shipping courier',
               href: route('courier.index'),
               icon: Bike,
+              available: menus.courier,
             },
           ]}
           label="Products"

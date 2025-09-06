@@ -1,11 +1,13 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRupiah, numberTrim } from '@/lib/utils';
+import { addToCart } from '@/pages/cart/actions/cart-actions';
 import { Product } from '@/types/product';
 import { Link } from '@inertiajs/react';
-import { ImageOff } from 'lucide-react';
+import { ImageOff, ShoppingCart } from 'lucide-react';
 import { FC } from 'react';
 
 type Props = {
@@ -37,6 +39,12 @@ const ProductItemCard: FC<Props> = ({ product }) => {
           <Badge>{numberTrim(product.stock)}</Badge>
         </div>
       </CardContent>
+      <CardFooter>
+        <Button className="w-full" onClick={() => addToCart(product)}>
+          <ShoppingCart />
+          Add to cart
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

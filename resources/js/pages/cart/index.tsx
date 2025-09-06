@@ -1,52 +1,91 @@
+import FormControl from '@/components/form-control';
+import SubmitButton from '@/components/submit-button';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { formatRupiah, strLimit } from '@/lib/utils';
+import { em, formatRupiah, strLimit } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Cart } from '@/types/cart';
-import { router, usePage } from '@inertiajs/react';
-import { LogIn, Minus, Plus, Trash2 } from 'lucide-react';
+import { Courier } from '@/types/courier';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { LogIn, Minus, Plus, Trash2, X } from 'lucide-react';
 import { FC, useState } from 'react';
+import { toast } from 'sonner';
 import CartBulkDeleteDialog from './components/cart-bulk-delete-dialog';
 import CartDeleteDialog from './components/cart-delete-dialog';
 
 type Props = {
   carts: Cart[];
   query: { [key: string]: string };
+  couriers: Courier[];
 };
 
-const CartList: FC<Props> = ({ carts }) => {
-  const [ids, setIds] = useState<number[]>([]);
+const CartList: FC<Props> = ({ carts = [], couriers = [] }) => {
   const [cari, setCari] = useState('');
 
   const { permissions } = usePage<SharedData>().props;
 
+  const { data, setData, post } = useForm({
+    cart_ids: [] as number[],
+    courier_id: '',
+    description: '',
+  });
+
   const handleUpdateQty = (cart: Cart, newqty: number) => {
-    router.put(route('cart.update', cart.id), { qty: cart.qty + newqty });
+    router.put(
+      route('cart.update', cart.id),
+      { qty: cart.qty + newqty },
+      {
+        preserveScroll: true,
+      },
+    );
   };
 
   const totalHarga = carts
-    .filter((cart) => ids.includes(cart.id))
+    .filter((cart) => data.cart_ids.includes(cart.id))
     .reduce((total, cart) => {
       return total + cart.product.price * cart.qty;
     }, 0);
+
+  const handleCheckout = () => {
+    post(route('transaction.store'), {
+      preserveScroll: true,
+      onSuccess: () => {
+        toast.success('Transaction created successfully');
+        setData('cart_ids', []);
+      },
+      onError: (e) => toast.error(em(e)),
+    });
+  };
 
   return (
     <AppLayout title="Carts" description="Manage your carts">
       <div className="flex gap-2">
         <Input placeholder="Search carts..." value={cari} onChange={(e) => setCari(e.target.value)} />
-        {ids.length > 0 && (
+        {data.cart_ids.length > 0 && (
           <>
             <Button variant={'ghost'} disabled>
-              {ids.length} item selected
+              {data.cart_ids.length} item selected
             </Button>
-            <CartBulkDeleteDialog cartIds={ids}>
+            <CartBulkDeleteDialog cartIds={data.cart_ids}>
               <Button variant={'destructive'}>
                 <Trash2 /> Delete selected
               </Button>
@@ -61,12 +100,15 @@ const CartList: FC<Props> = ({ carts }) => {
               <Button variant={'ghost'} size={'icon'} asChild>
                 <Label>
                   <Checkbox
-                    checked={ids.length === carts.length}
+                    checked={data.cart_ids.length === carts.length}
                     onCheckedChange={(checked) => {
                       if (checked) {
-                        setIds(carts.map((cart) => cart.id));
+                        setData(
+                          'cart_ids',
+                          carts.map((cart) => cart.id),
+                        );
                       } else {
-                        setIds([]);
+                        setData('cart_ids', []);
                       }
                     }}
                   />
@@ -89,12 +131,15 @@ const CartList: FC<Props> = ({ carts }) => {
                   <Button variant={'ghost'} size={'icon'} asChild>
                     <Label>
                       <Checkbox
-                        checked={ids.includes(cart.id)}
+                        checked={data.cart_ids.includes(cart.id)}
                         onCheckedChange={(checked) => {
                           if (checked) {
-                            setIds([...ids, cart.id]);
+                            setData('cart_ids', [...data.cart_ids, cart.id]);
                           } else {
-                            setIds(ids.filter((id) => id !== cart.id));
+                            setData(
+                              'cart_ids',
+                              data.cart_ids.filter((id) => id !== cart.id),
+                            );
                           }
                         }}
                       />
@@ -158,10 +203,52 @@ const CartList: FC<Props> = ({ carts }) => {
             <h1 className="text-2xl font-bold">{formatRupiah(totalHarga)}</h1>
           </div>
           <div>
-            <Button disabled={ids.length === 0}>
-              <LogIn />
-              Checkout
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button disabled={data.cart_ids.length === 0}>
+                  <LogIn />
+                  Checkout
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Checkout</DialogTitle>
+                  <DialogDescription>lanjutkan untuk checkout {data.cart_ids.length} item</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <FormControl label="Pilih Kurir">
+                    <Select value={data.courier_id} onValueChange={(value) => setData('courier_id', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kurir" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {couriers.map((courier) => (
+                          <SelectItem key={courier.id} value={courier.id.toString()}>
+                            {courier.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormControl label="Catatan pengiriman">
+                    <Textarea
+                      placeholder="Tuliskan catatan pengiriman"
+                      value={data.description}
+                      onChange={(e) => setData('description', e.target.value)}
+                    />
+                  </FormControl>
+                </div>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant={'outline'}>
+                      <X />
+                      Batalin
+                    </Button>
+                  </DialogClose>
+                  <SubmitButton disabled={data.cart_ids.length === 0} onClick={handleCheckout} label="Checkout" icon={LogIn} />
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </CardContent>
       </Card>

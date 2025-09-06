@@ -12,6 +12,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\TransactionController;
+
 
 
 
@@ -51,6 +53,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('courier/bulk', [CourierController::class, 'bulkUpdate'])->name('courier.bulk.update');
     Route::delete('courier/bulk', [CourierController::class, 'bulkDelete'])->name('courier.bulk.destroy');
     Route::apiResource('courier', CourierController::class);
+    Route::put('transaction/bulk', [TransactionController::class, 'bulkUpdate'])->name('transaction.bulk.update');
+    Route::delete('transaction/bulk', [TransactionController::class, 'bulkDelete'])->name('transaction.bulk.destroy');
+    Route::apiResource('transaction', TransactionController::class);
 });
 
 require __DIR__.'/settings.php';
