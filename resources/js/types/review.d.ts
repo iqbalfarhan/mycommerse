@@ -1,6 +1,5 @@
-import { Transaction } from "./transaction";
-import { User } from "./user";
-
+import { Transaction } from './transaction';
+import { User } from './user';
 
 export type Review = {
   id: number;

@@ -8,13 +8,12 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReviewController;
-
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/about', [WelcomeController::class, 'about'])->name('about');
@@ -37,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('category/bulk', [CategoryController::class, 'bulkUpdate'])->name('category.bulk.update');
     Route::delete('category/bulk', [CategoryController::class, 'bulkDelete'])->name('category.bulk.destroy');
     Route::apiResource('category', CategoryController::class);
+
     Route::put('product/bulk', [ProductController::class, 'bulkUpdate'])->name('product.bulk.update');
     Route::delete('product/bulk', [ProductController::class, 'bulkDelete'])->name('product.bulk.destroy');
     Route::get('product/archived', [ProductController::class, 'archived'])->name('product.archived');
@@ -44,16 +44,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('product/{product}/force-delete', [ProductController::class, 'forceDelete'])->name('product.force-delete');
     Route::post('product/{product}/upload-media', [ProductController::class, 'uploadMedia'])->name('product.upload-media');
     Route::apiResource('product', ProductController::class);
+
     Route::put('cart/bulk', [CartController::class, 'bulkUpdate'])->name('cart.bulk.update');
     Route::delete('cart/bulk', [CartController::class, 'bulkDelete'])->name('cart.bulk.destroy');
     Route::apiResource('cart', CartController::class);
+
     Route::put('courier/bulk', [CourierController::class, 'bulkUpdate'])->name('courier.bulk.update');
     Route::delete('courier/bulk', [CourierController::class, 'bulkDelete'])->name('courier.bulk.destroy');
     Route::apiResource('courier', CourierController::class);
+
     Route::put('transaction/bulk', [TransactionController::class, 'bulkUpdate'])->name('transaction.bulk.update');
     Route::delete('transaction/bulk', [TransactionController::class, 'bulkDelete'])->name('transaction.bulk.destroy');
+    Route::post('transaction/{transaction}/upload-media', [TransactionController::class, 'uploadMedia'])->name('transaction.upload-media');
     Route::apiResource('transaction', TransactionController::class);
     Route::resource('order', OrderController::class);
+
     Route::put('review/bulk', [ReviewController::class, 'bulkUpdate'])->name('review.bulk.update');
     Route::delete('review/bulk', [ReviewController::class, 'bulkDelete'])->name('review.bulk.destroy');
     Route::apiResource('review', ReviewController::class);

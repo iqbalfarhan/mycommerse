@@ -22,6 +22,7 @@ export type Transaction = {
   total_price: number;
   paid: boolean;
   review?: Review;
+  media?: Media[];
   created_at: string;
   updated_at: string;
 };

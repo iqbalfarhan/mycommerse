@@ -29,7 +29,7 @@ const ProductItemCard: FC<Props> = ({ product }) => {
         </Avatar>
       </CardContent>
       <CardHeader className="flex-1">
-        <CardTitle className="leading-normal">
+        <CardTitle className="line-clamp-3 leading-normal">
           <Link href={route('product.show', product.id)}>{product.name}</Link>
         </CardTitle>
       </CardHeader>

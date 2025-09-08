@@ -4,8 +4,6 @@ import { Product } from '@/types/product';
 import { usePage } from '@inertiajs/react';
 import { FC } from 'react';
 import ProductItemCard from '../product/components/product-item-card';
-import DateTimeWidget from './widget/date-time-widget';
-import UserInfoWidget from './widget/user-info-widget';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -24,12 +22,7 @@ const Dashboard: FC<Props> = ({ products = [] }) => {
   } = usePage<SharedData>().props;
 
   return (
-    <AppLayout title="Dashboard" description={`Selamat datang, kamu masuk sebagai ${roles.join(', ')}`} breadcrumbs={breadcrumbs}>
-      <div className="grid grid-cols-2 gap-6">
-        <UserInfoWidget />
-        <DateTimeWidget />
-      </div>
-
+    <AppLayout title="Katalog produk" description={`Selamat datang, kamu masuk sebagai ${roles.join(', ')}`} breadcrumbs={breadcrumbs}>
       <div className="grid-responsive grid gap-6">
         {products.map((p) => (
           <ProductItemCard product={p} key={p.id} />

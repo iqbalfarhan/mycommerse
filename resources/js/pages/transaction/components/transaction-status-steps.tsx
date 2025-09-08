@@ -61,7 +61,12 @@ const TransactionStatusStep: FC<Props> = ({ status }) => {
           const isActive = stepIndex <= currentIndex;
 
           return (
-            <Button key={idx} variant={'ghost'} className={`justify-start ${isActive ? '' : 'text-primary'}`} disabled={!isActive}>
+            <Button
+              key={idx}
+              variant={'ghost'}
+              className={`justify-start ${isActive ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}
+              disabled={true}
+            >
               <step.icon className="mr-2 h-4 w-4" />
               {step.label}
             </Button>

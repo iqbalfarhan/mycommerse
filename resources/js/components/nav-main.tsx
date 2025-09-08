@@ -1,4 +1,4 @@
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 
@@ -48,6 +48,7 @@ export function NavMain({ items = [], label }: Props) {
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
+              <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
             </SidebarMenuItem>
           );
         })}

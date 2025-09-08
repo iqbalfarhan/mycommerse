@@ -8,14 +8,13 @@ import AppLayout from '@/layouts/app-layout';
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, FolderArchive, Image, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
+import ReviewBulkDeleteDialog from './components/review-bulk-delete-dialog';
+import ReviewBulkEditSheet from './components/review-bulk-edit-sheet';
 import ReviewDeleteDialog from './components/review-delete-dialog';
 import ReviewFilterSheet from './components/review-filter-sheet';
 import ReviewFormSheet from './components/review-form-sheet';
-import ReviewBulkEditSheet from './components/review-bulk-edit-sheet';
-import ReviewBulkDeleteDialog from './components/review-bulk-delete-dialog';
-import ReviewUploadMediaSheet from './components/review-upload-sheet';
 
 type Props = {
   reviews: Review[];
@@ -42,7 +41,6 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
               </Button>
             </ReviewFormSheet>
           )}
-          
         </>
       }
     >
@@ -119,7 +117,7 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                     </Label>
                   </Button>
                 </TableCell>
-                <TableCell>{ review.name }</TableCell>
+                <TableCell>{review.name}</TableCell>
                 <TableCell>
                   {permissions?.canShow && (
                     <Button variant={'ghost'} size={'icon'}>
@@ -130,7 +128,6 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                   )}
                   {permissions?.canUpdate && (
                     <>
-                      
                       <ReviewFormSheet purpose="edit" review={review}>
                         <Button variant={'ghost'} size={'icon'}>
                           <Edit />

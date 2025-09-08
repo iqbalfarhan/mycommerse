@@ -7,7 +7,7 @@ type Props = {
 };
 
 const TransactionPaidStatusBadge: FC<Props> = ({ paid }) => {
-  return <>{paid ? <Badge variant="success">Sudah dibayar</Badge> : <Badge variant="warning">Belum dibayar</Badge>}</>;
+  return <>{paid ? <Badge variant="success">Paid</Badge> : <Badge variant="warning">Unpaid</Badge>}</>;
 };
 
 export default TransactionPaidStatusBadge;

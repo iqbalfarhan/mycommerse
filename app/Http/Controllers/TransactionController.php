@@ -6,6 +6,7 @@ use App\Http\Requests\BulkDeleteTransactionRequest;
 use App\Http\Requests\BulkUpdateTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Requests\UploadTransactionMediaRequest;
 use App\Models\Cart;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -84,7 +85,7 @@ class TransactionController extends Controller
         $this->pass('show transaction');
 
         return Inertia::render('transaction/show', [
-            'transaction' => $transaction->load(['user', 'courier', 'review']),
+            'transaction' => $transaction->load(['user', 'courier', 'review', 'media']),
             'statusLists' => Transaction::$statusLists,
             'permissions' => [
                 'canUpdate' => $this->user->can('update transaction'),
@@ -135,5 +136,13 @@ class TransactionController extends Controller
 
         $data = $request->validated();
         Transaction::whereIn('id', $data['transaction_ids'])->delete();
+    }
+
+    public function uploadMedia(UploadTransactionMediaRequest $request, Transaction $transaction)
+    {
+        $this->pass('update transaction');
+
+        $data = $request->validated();
+        $transaction->addMedia($data['file'])->toMediaCollection();
     }
 }

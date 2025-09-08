@@ -34,7 +34,7 @@ const ShowProduct: FC<Props> = ({ product, permissions }) => {
               <ProductFormSheet purpose="edit" product={product}>
                 <Button>
                   <Edit />
-                  Edit
+                  Edit product
                 </Button>
               </ProductFormSheet>
             </>
@@ -51,22 +51,24 @@ const ShowProduct: FC<Props> = ({ product, permissions }) => {
                   <Avatar className="size-full rounded-lg">
                     <AvatarImage src={media.original_url} alt={media.name} className="object-cover" />
                   </Avatar>
-                  <Button
-                    variant={'destructive'}
-                    className="absolute right-2 bottom-2"
-                    onClick={() => {
-                      router.delete(route('media-library.destroy', media.id), {
-                        preserveScroll: true,
-                        onSuccess: () => {
-                          toast.success('Media deleted successfully');
-                        },
-                        onError: (e) => toast.error(em(e)),
-                      });
-                    }}
-                  >
-                    <Trash2 />
-                    hapus
-                  </Button>
+                  {permissions?.canUpdate && (
+                    <Button
+                      variant={'destructive'}
+                      className="absolute right-2 bottom-2"
+                      onClick={() => {
+                        router.delete(route('media-library.destroy', media.id), {
+                          preserveScroll: true,
+                          onSuccess: () => {
+                            toast.success('Media deleted successfully');
+                          },
+                          onError: (e) => toast.error(em(e)),
+                        });
+                      }}
+                    >
+                      <Trash2 />
+                      hapus
+                    </Button>
+                  )}
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -87,8 +89,6 @@ const ShowProduct: FC<Props> = ({ product, permissions }) => {
               <CardDescription>{product.category.name}</CardDescription>
               <CardTitle className="text-3xl leading-normal">{product.name}</CardTitle>
             </CardHeader>
-          </Card>
-          <Card>
             <CardContent>
               <MarkdownReader content={product.description} />
             </CardContent>

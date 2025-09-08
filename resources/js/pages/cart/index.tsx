@@ -1,5 +1,6 @@
 import FormControl from '@/components/form-control';
 import SubmitButton from '@/components/submit-button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -41,7 +42,10 @@ type Props = {
 const CartList: FC<Props> = ({ carts = [], couriers = [] }) => {
   const [cari, setCari] = useState('');
 
-  const { permissions } = usePage<SharedData>().props;
+  const {
+    permissions,
+    auth: { user },
+  } = usePage<SharedData>().props;
 
   const { data, setData, post } = useForm({
     cart_ids: [] as number[],
@@ -216,6 +220,17 @@ const CartList: FC<Props> = ({ carts = [], couriers = [] }) => {
                   <DialogDescription>lanjutkan untuk checkout {data.cart_ids.length} item</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6 py-4">
+                  {user.address == null ? (
+                    <Alert variant="destructive">
+                      <AlertTitle>Alamat belum diisi</AlertTitle>
+                      <AlertDescription>Silahkan isi alamat pengiriman. ganti alamat di halamanprofile anda</AlertDescription>
+                    </Alert>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <CardTitle>Alamat pengiriman</CardTitle>
+                      <CardDescription className="leading-normal">{user.address}</CardDescription>
+                    </div>
+                  )}
                   <FormControl label="Pilih Kurir" required>
                     <Select value={data.courier_id} onValueChange={(value) => setData('courier_id', value)}>
                       <SelectTrigger>

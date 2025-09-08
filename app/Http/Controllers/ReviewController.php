@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteReviewRequest;
+use App\Http\Requests\BulkUpdateReviewRequest;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
-use App\Http\Requests\BulkUpdateReviewRequest;
-use App\Http\Requests\BulkDeleteReviewRequest;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 
 class ReviewController extends Controller
 {
@@ -18,11 +17,11 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
-        $this->pass("index review");
-        
+        $this->pass('index review');
+
         $data = Review::query()
-            //->with(['media'])
-            ->when($request->name, function($q, $v){
+            // ->with(['media'])
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
@@ -30,11 +29,11 @@ class ReviewController extends Controller
             'reviews' => $data->get(),
             'query' => $request->input(),
             'permissions' => [
-                'canAdd' => $this->user->can("create review"),
-                'canShow' => $this->user->can("show review"),
-                'canUpdate' => $this->user->can("update review"),
-                'canDelete' => $this->user->can("delete review"),
-            ]
+                'canAdd' => $this->user->can('create review'),
+                'canShow' => $this->user->can('show review'),
+                'canUpdate' => $this->user->can('update review'),
+                'canDelete' => $this->user->can('delete review'),
+            ],
         ]);
     }
 
@@ -43,7 +42,7 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
-        $this->pass("create review");
+        $this->pass('create review');
 
         $data = $request->validated();
         Review::create($data);
@@ -54,7 +53,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        $this->pass("show review");
+        $this->pass('show review');
 
         if ($this->user->cannot('show review', Review::class)) {
             return abort(403);
@@ -63,9 +62,9 @@ class ReviewController extends Controller
         return Inertia::render('review/show', [
             'review' => $review,
             'permissions' => [
-                'canUpdate' => $this->user->can("update review"),
-                'canDelete' => $this->user->can("delete review"),
-            ]
+                'canUpdate' => $this->user->can('update review'),
+                'canDelete' => $this->user->can('delete review'),
+            ],
         ]);
     }
 
@@ -74,7 +73,7 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, Review $review)
     {
-        $this->pass("update review");
+        $this->pass('update review');
 
         $data = $request->validated();
         $review->update($data);
@@ -85,7 +84,7 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        $this->pass("delete review");
+        $this->pass('delete review');
 
         $review->delete();
     }
@@ -95,7 +94,7 @@ class ReviewController extends Controller
      */
     public function bulkUpdate(BulkUpdateReviewRequest $request)
     {
-        $this->pass("update review");
+        $this->pass('update review');
 
         $data = $request->validated();
         Review::whereIn('id', $data['review_ids'])->update($data);
@@ -106,13 +105,9 @@ class ReviewController extends Controller
      */
     public function bulkDelete(BulkDeleteReviewRequest $request)
     {
-        $this->pass("delete review");
+        $this->pass('delete review');
 
         $data = $request->validated();
         Review::whereIn('id', $data['review_ids'])->delete();
     }
-
-    
-    
-    
 }

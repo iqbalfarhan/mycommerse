@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-
-class Review extends Model 
+class Review extends Model
 {
     use HasFactory;
-    
-    
 
-    //protected $table = 'reviews';
+    // protected $table = 'reviews';
 
     /*
     protected $fillable = [
@@ -29,6 +25,4 @@ class Review extends Model
         'created_at',
         'updated_at',
     ];
-
-    
 }

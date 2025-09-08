@@ -82,7 +82,7 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
               </Button>
             </TableHead>
             <TableHead>Items</TableHead>
-            <TableHead>Courier</TableHead>
+            <TableHead>Paid</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Total Price</TableHead>
             <TableHead>Actions</TableHead>
@@ -130,12 +130,12 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                     ))}
                   </Link>
                 </TableCell>
-                <TableCell>{transaction.courier.name}</TableCell>
+
                 <TableCell>
-                  <div className="flex flex-col gap-1.5">
-                    <TransactionPaidStatusBadge paid={transaction.paid} />
-                    <TransactionStatusBadge status={transaction.status} />
-                  </div>
+                  <TransactionPaidStatusBadge paid={transaction.paid} />
+                </TableCell>
+                <TableCell>
+                  <TransactionStatusBadge status={transaction.status} />
                 </TableCell>
                 <TableCell>{formatRupiah(Number(transaction.total_price))}</TableCell>
                 <TableCell>
