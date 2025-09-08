@@ -4,22 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class Product extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
     use SoftDeletes;
 
-    use InteractsWithMedia;
-
-
-    //protected $table = 'products';
+    // protected $table = 'products';
 
     /*
     protected $fillable = [
@@ -38,7 +35,7 @@ class Product extends Model implements HasMedia
     ];
 
     public $appends = [
-        'thumbnail'
+        'thumbnail',
     ];
 
     /**
@@ -59,6 +56,7 @@ class Product extends Model implements HasMedia
     public function getThumbnailAttribute()
     {
         $firstMedia = $this->getFirstMediaUrl();
+
         return $firstMedia;
     }
 }

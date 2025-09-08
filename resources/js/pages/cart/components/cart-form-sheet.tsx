@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { em, capitalizeWords } from '@/lib/utils';
+import { capitalizeWords, em } from '@/lib/utils';
 import { FormPurpose } from '@/types';
 import { Cart } from '@/types/cart';
 import { useForm } from '@inertiajs/react';

@@ -16,7 +16,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'courier_id' => 'required|exists:couriers,id',
             'cart_ids' => 'array',
-            'cart_ids.*'=> 'exists:carts,id',
+            'cart_ids.*' => 'exists:carts,id',
             'description' => 'nullable|string|max:255',
         ];
     }

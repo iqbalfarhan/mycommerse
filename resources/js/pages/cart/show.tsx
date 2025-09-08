@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Cart } from '@/types/cart';
 import { FC } from 'react';
@@ -12,7 +12,7 @@ const ShowCart: FC<Props> = ({ cart }) => {
     <AppLayout title="Detail Cart" description="Detail cart">
       <Card>
         <CardHeader>
-          <CardTitle>{ cart.name }</CardTitle>
+          <CardTitle>{cart.product.name}</CardTitle>
           <CardDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, quo impedit cupiditate voluptas culpa magnam itaque distinctio at ullam,
             beatae perferendis doloremque facilis mollitia, quod corporis. Autem voluptatum ipsum placeat.

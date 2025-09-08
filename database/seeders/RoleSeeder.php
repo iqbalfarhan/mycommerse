@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,17 +20,17 @@ class RoleSeeder extends Seeder
         }
 
         $permissions = [
-            "menu role",
-            "index role",
-            "show role",
-            "create role",
-            "update role",
-            "delete role",
+            'menu role',
+            'index role',
+            'show role',
+            'create role',
+            'update role',
+            'delete role',
         ];
 
         foreach ($permissions as $permit) {
             Permission::updateOrCreate([
-                'group' => "role",
+                'group' => 'role',
                 'name' => $permit,
             ]);
         }

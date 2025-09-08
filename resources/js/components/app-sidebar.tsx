@@ -26,7 +26,7 @@ export function AppSidebar() {
   const { menus } = usePage<{ menus: Record<string, boolean> }>().props;
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
+    <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -60,6 +60,12 @@ export function AppSidebar() {
         />
         <NavMain
           items={[
+            {
+              title: 'Pesanan terbaru',
+              href: route('order.index'),
+              icon: Wallet,
+              available: menus.category,
+            },
             {
               title: 'Product category',
               href: route('category.index'),

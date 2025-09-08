@@ -15,7 +15,7 @@ export const addToCart = (product: Product, qty: number = 1) => {
       onSuccess: () =>
         toast.success('Product added to cart', {
           action: {
-            label: 'Keranjang',
+            label: 'Open cart',
             onClick: () => router.visit(route('cart.index')),
           },
         }),

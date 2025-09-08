@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -15,23 +14,23 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissionGroups = [
-            "settings" => [
-                "open adminer" => ['superadmin'],
+            'settings' => [
+                'open adminer' => ['superadmin'],
             ],
-            "dashboard" => [
-                "profile" => ["*"],
-                "documentation" => ["*"]
-            ]
+            'dashboard' => [
+                'profile' => ['*'],
+                'documentation' => ['*'],
+            ],
         ];
 
         foreach ($permissionGroups as $group => $permissions) {
             foreach ($permissions as $permissionName => $roles) {
                 $permission = Permission::updateOrCreate([
-                    'name'  => $permissionName,
+                    'name' => $permissionName,
                     'group' => $group,
                 ], []);
-                
-                if ($roles === ["*"]) {
+
+                if ($roles === ['*']) {
                     $roles = Role::all()->pluck('name')->toArray();
                 }
 

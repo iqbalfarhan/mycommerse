@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteCategoryRequest;
+use App\Http\Requests\BulkUpdateCategoryRequest;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Http\Requests\BulkUpdateCategoryRequest;
-use App\Http\Requests\BulkDeleteCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 
 class CategoryController extends Controller
 {
@@ -18,11 +17,11 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $this->pass("index category");
-        
+        $this->pass('index category');
+
         $data = Category::query()
-            //->with(['media'])
-            ->when($request->name, function($q, $v){
+            // ->with(['media'])
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
@@ -30,11 +29,11 @@ class CategoryController extends Controller
             'categories' => $data->get(),
             'query' => $request->input(),
             'permissions' => [
-                'canAdd' => $this->user->can("create category"),
-                'canShow' => $this->user->can("show category"),
-                'canUpdate' => $this->user->can("update category"),
-                'canDelete' => $this->user->can("delete category"),
-            ]
+                'canAdd' => $this->user->can('create category'),
+                'canShow' => $this->user->can('show category'),
+                'canUpdate' => $this->user->can('update category'),
+                'canDelete' => $this->user->can('delete category'),
+            ],
         ]);
     }
 
@@ -43,7 +42,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $this->pass("create category");
+        $this->pass('create category');
 
         $data = $request->validated();
         Category::create($data);
@@ -54,7 +53,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $this->pass("show category");
+        $this->pass('show category');
 
         if ($this->user->cannot('show category', Category::class)) {
             return abort(403);
@@ -63,9 +62,9 @@ class CategoryController extends Controller
         return Inertia::render('category/show', [
             'category' => $category,
             'permissions' => [
-                'canUpdate' => $this->user->can("update category"),
-                'canDelete' => $this->user->can("delete category"),
-            ]
+                'canUpdate' => $this->user->can('update category'),
+                'canDelete' => $this->user->can('delete category'),
+            ],
         ]);
     }
 
@@ -74,7 +73,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $this->pass("update category");
+        $this->pass('update category');
 
         $data = $request->validated();
         $category->update($data);
@@ -85,7 +84,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $this->pass("delete category");
+        $this->pass('delete category');
 
         $category->delete();
     }
@@ -95,7 +94,7 @@ class CategoryController extends Controller
      */
     public function bulkUpdate(BulkUpdateCategoryRequest $request)
     {
-        $this->pass("update category");
+        $this->pass('update category');
 
         $data = $request->validated();
         Category::whereIn('id', $data['category_ids'])->update($data);
@@ -106,13 +105,9 @@ class CategoryController extends Controller
      */
     public function bulkDelete(BulkDeleteCategoryRequest $request)
     {
-        $this->pass("delete category");
+        $this->pass('delete category');
 
         $data = $request->validated();
         Category::whereIn('id', $data['category_ids'])->delete();
     }
-
-    
-    
-    
 }

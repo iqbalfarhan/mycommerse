@@ -215,8 +215,8 @@ const CartList: FC<Props> = ({ carts = [], couriers = [] }) => {
                   <DialogTitle>Checkout</DialogTitle>
                   <DialogDescription>lanjutkan untuk checkout {data.cart_ids.length} item</DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <FormControl label="Pilih Kurir">
+                <div className="space-y-6 py-4">
+                  <FormControl label="Pilih Kurir" required>
                     <Select value={data.courier_id} onValueChange={(value) => setData('courier_id', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Pilih Kurir" />

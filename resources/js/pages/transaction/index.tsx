@@ -17,6 +17,7 @@ import TransactionBulkDeleteDialog from './components/transaction-bulk-delete-di
 import TransactionBulkEditSheet from './components/transaction-bulk-edit-sheet';
 import TransactionFilterSheet from './components/transaction-filter-sheet';
 import TransactionFormSheet from './components/transaction-form-sheet';
+import TransactionPaidStatusBadge from './components/transaction-paid-status-badge';
 import TransactionStatusBadge from './components/transaction-status-badge';
 
 type Props = {
@@ -131,7 +132,10 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                 </TableCell>
                 <TableCell>{transaction.courier.name}</TableCell>
                 <TableCell>
-                  <TransactionStatusBadge status={transaction.status} />
+                  <div className="flex flex-col gap-1.5">
+                    <TransactionPaidStatusBadge paid={transaction.paid} />
+                    <TransactionStatusBadge status={transaction.status} />
+                  </div>
                 </TableCell>
                 <TableCell>{formatRupiah(Number(transaction.total_price))}</TableCell>
                 <TableCell>

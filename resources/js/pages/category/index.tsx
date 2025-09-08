@@ -8,14 +8,13 @@ import AppLayout from '@/layouts/app-layout';
 import { SharedData } from '@/types';
 import { Category } from '@/types/category';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, FolderArchive, Image, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
+import CategoryBulkDeleteDialog from './components/category-bulk-delete-dialog';
+import CategoryBulkEditSheet from './components/category-bulk-edit-sheet';
 import CategoryDeleteDialog from './components/category-delete-dialog';
 import CategoryFilterSheet from './components/category-filter-sheet';
 import CategoryFormSheet from './components/category-form-sheet';
-import CategoryBulkEditSheet from './components/category-bulk-edit-sheet';
-import CategoryBulkDeleteDialog from './components/category-bulk-delete-dialog';
-import CategoryUploadMediaSheet from './components/category-upload-sheet';
 
 type Props = {
   categories: Category[];
@@ -42,7 +41,6 @@ const CategoryList: FC<Props> = ({ categories, query }) => {
               </Button>
             </CategoryFormSheet>
           )}
-          
         </>
       }
     >
@@ -119,7 +117,7 @@ const CategoryList: FC<Props> = ({ categories, query }) => {
                     </Label>
                   </Button>
                 </TableCell>
-                <TableCell>{ category.name }</TableCell>
+                <TableCell>{category.name}</TableCell>
                 <TableCell>
                   {permissions?.canShow && (
                     <Button variant={'ghost'} size={'icon'}>
@@ -130,7 +128,6 @@ const CategoryList: FC<Props> = ({ categories, query }) => {
                   )}
                   {permissions?.canUpdate && (
                     <>
-                      
                       <CategoryFormSheet purpose="edit" category={category}>
                         <Button variant={'ghost'} size={'icon'}>
                           <Edit />

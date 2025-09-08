@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteCartRequest;
+use App\Http\Requests\BulkUpdateCartRequest;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
-use App\Http\Requests\BulkUpdateCartRequest;
-use App\Http\Requests\BulkDeleteCartRequest;
 use App\Models\Cart;
 use App\Models\Courier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 
 class CartController extends Controller
 {
@@ -19,11 +18,12 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        $this->pass("index cart");
-        
+        $this->pass('index cart');
+
         $data = Cart::query()
             ->with(['user', 'product.category'])
-            ->when($request->name, function($q, $v){
+            ->whereUserId($this->user->id)
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
@@ -32,11 +32,11 @@ class CartController extends Controller
             'query' => $request->input(),
             'couriers' => Courier::get(),
             'permissions' => [
-                'canAdd' => $this->user->can("create cart"),
-                'canShow' => $this->user->can("show cart"),
-                'canUpdate' => $this->user->can("update cart"),
-                'canDelete' => $this->user->can("delete cart"),
-            ]
+                'canAdd' => $this->user->can('create cart'),
+                'canShow' => $this->user->can('show cart'),
+                'canUpdate' => $this->user->can('update cart'),
+                'canDelete' => $this->user->can('delete cart'),
+            ],
         ]);
     }
 
@@ -45,7 +45,7 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-        $this->pass("create cart");
+        $this->pass('create cart');
 
         $data = $request->validated();
         $userId = $request->user()->id;
@@ -60,7 +60,7 @@ class CartController extends Controller
         if ($existingCartItem) {
             // Update existing cart item by adding the new quantity
             $existingCartItem->update([
-                'qty' => $existingCartItem->qty + $newQty
+                'qty' => $existingCartItem->qty + $newQty,
             ]);
         } else {
             // Create new cart item
@@ -74,7 +74,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        $this->pass("show cart");
+        $this->pass('show cart');
 
         if ($this->user->cannot('show cart', Cart::class)) {
             return abort(403);
@@ -83,9 +83,9 @@ class CartController extends Controller
         return Inertia::render('cart/show', [
             'cart' => $cart->load(['user', 'product']),
             'permissions' => [
-                'canUpdate' => $this->user->can("update cart"),
-                'canDelete' => $this->user->can("delete cart"),
-            ]
+                'canUpdate' => $this->user->can('update cart'),
+                'canDelete' => $this->user->can('delete cart'),
+            ],
         ]);
     }
 
@@ -94,7 +94,7 @@ class CartController extends Controller
      */
     public function update(UpdateCartRequest $request, Cart $cart)
     {
-        $this->pass("update cart");
+        $this->pass('update cart');
 
         $data = $request->validated();
         $cart->update($data);
@@ -105,7 +105,7 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        $this->pass("delete cart");
+        $this->pass('delete cart');
 
         $cart->delete();
     }
@@ -115,7 +115,7 @@ class CartController extends Controller
      */
     public function bulkUpdate(BulkUpdateCartRequest $request)
     {
-        $this->pass("update cart");
+        $this->pass('update cart');
 
         $data = $request->validated();
         Cart::whereIn('id', $data['cart_ids'])->update($data);
@@ -126,13 +126,9 @@ class CartController extends Controller
      */
     public function bulkDelete(BulkDeleteCartRequest $request)
     {
-        $this->pass("delete cart");
+        $this->pass('delete cart');
 
         $data = $request->validated();
         Cart::whereIn('id', $data['cart_ids'])->delete();
     }
-
-    
-    
-    
 }

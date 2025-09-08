@@ -3,22 +3,56 @@ import SubmitButton from '@/components/submit-button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { em } from '@/lib/utils';
+import { FormPurpose, SharedData } from '@/types';
+import { Review } from '@/types/review';
 import { Transaction } from '@/types/transaction';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Send, Star } from 'lucide-react';
 import { FC } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
-  transaction: Transaction;
+  review?: Review;
+  purpose: FormPurpose;
 };
 
-const TransactionReviewCard: FC<Props> = ({ transaction }) => {
-  const { data, setData } = useForm({
-    rating: 0,
-    review: '',
+const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
+  const {
+    permissions,
+    transaction,
+    auth: { user },
+  } = usePage<SharedData & { transaction: Transaction }>().props;
+
+  const { data, setData, post, put, processing } = useForm({
+    transaction_id: transaction?.id,
+    user_id: review?.user_id ?? user.id,
+    rating: review?.rating ?? 0,
+    comment: review?.comment ?? '',
   });
 
   if (transaction.status !== 'delivered') return null;
+  if (permissions?.canAddReview === false) return null;
+
+  const handleSubmit = () => {
+    if (purpose === 'create' || purpose === 'duplicate') {
+      post(route('review.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast.success('Review created successfully');
+        },
+        onError: (e) => toast.error(em(e)),
+      });
+    } else {
+      put(route('review.update', review?.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast.success('Review updated successfully');
+        },
+        onError: (e) => toast.error(em(e)),
+      });
+    }
+  };
 
   return (
     <Card className="break-inside-avoid">
@@ -30,7 +64,7 @@ const TransactionReviewCard: FC<Props> = ({ transaction }) => {
       <CardContent className="space-y-6">
         {/* Review Text */}
         <FormControl label="Review">
-          <Textarea placeholder="Tulis review anda..." value={data.review} onChange={(e) => setData('review', e.target.value)} />
+          <Textarea placeholder="Tulis review anda..." value={data.comment} onChange={(e) => setData('comment', e.target.value)} />
         </FormControl>
 
         {/* Rating */}
@@ -44,10 +78,10 @@ const TransactionReviewCard: FC<Props> = ({ transaction }) => {
                   name="rating"
                   value={value}
                   checked={data.rating === value}
-                  onChange={() => setData('rating', value)}
+                  onChange={() => setData('rating', value as number)}
                   className="hidden"
                 />
-                <Star className={`text-lg ${data.rating >= value ? 'fill-yellow-500 stroke-yellow-500' : 'text-yellow-500'}`} />
+                <Star className={`text-lg ${data.rating >= value ? 'fill-warning stroke-warning' : 'text-warning'}`} />
               </label>
             );
           })}
@@ -55,7 +89,7 @@ const TransactionReviewCard: FC<Props> = ({ transaction }) => {
       </CardContent>
       <Separator />
       <CardFooter>
-        <SubmitButton label="Kirim review" icon={Send} />
+        <SubmitButton onClick={handleSubmit} loading={processing} label="Kirim review" icon={Send} />
       </CardFooter>
     </Card>
   );

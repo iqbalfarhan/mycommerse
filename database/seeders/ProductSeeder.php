@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Product;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
 class ProductSeeder extends Seeder
@@ -14,20 +14,20 @@ class ProductSeeder extends Seeder
 
         // uncommand archived, restore and force delete if Product model has SoftDeletes
         $permissions = [
-            "menu product",
-            "index product",
-            "show product",
-            "create product",
-            "update product",
-            "delete product",
-            //"archived product",
-            //"restore product",
-            //"force delete product",
+            'menu product',
+            'index product',
+            'show product',
+            'create product',
+            'update product',
+            'delete product',
+            // "archived product",
+            // "restore product",
+            // "force delete product",
         ];
 
         foreach ($permissions as $permit) {
             Permission::updateOrCreate([
-                'group' => "product",
+                'group' => 'product',
                 'name' => $permit,
             ]);
         }

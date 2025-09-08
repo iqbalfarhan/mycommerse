@@ -77,6 +77,10 @@
     "test": [
       "@php artisan config:clear --ansi",
       "@php artisan test"
+    ],
+    "format": [
+      "./vendor/bin/pint",
+      "pnpm run format"
     ]
   },
   "extra": {

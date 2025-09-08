@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteCourierRequest;
+use App\Http\Requests\BulkUpdateCourierRequest;
 use App\Http\Requests\StoreCourierRequest;
 use App\Http\Requests\UpdateCourierRequest;
-use App\Http\Requests\BulkUpdateCourierRequest;
-use App\Http\Requests\BulkDeleteCourierRequest;
 use App\Models\Courier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 
 class CourierController extends Controller
 {
@@ -18,11 +17,11 @@ class CourierController extends Controller
      */
     public function index(Request $request)
     {
-        $this->pass("index courier");
-        
+        $this->pass('index courier');
+
         $data = Courier::query()
-            //->with(['media'])
-            ->when($request->name, function($q, $v){
+            // ->with(['media'])
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
@@ -30,11 +29,11 @@ class CourierController extends Controller
             'couriers' => $data->get(),
             'query' => $request->input(),
             'permissions' => [
-                'canAdd' => $this->user->can("create courier"),
-                'canShow' => $this->user->can("show courier"),
-                'canUpdate' => $this->user->can("update courier"),
-                'canDelete' => $this->user->can("delete courier"),
-            ]
+                'canAdd' => $this->user->can('create courier'),
+                'canShow' => $this->user->can('show courier'),
+                'canUpdate' => $this->user->can('update courier'),
+                'canDelete' => $this->user->can('delete courier'),
+            ],
         ]);
     }
 
@@ -43,7 +42,7 @@ class CourierController extends Controller
      */
     public function store(StoreCourierRequest $request)
     {
-        $this->pass("create courier");
+        $this->pass('create courier');
 
         $data = $request->validated();
         Courier::create($data);
@@ -54,7 +53,7 @@ class CourierController extends Controller
      */
     public function show(Courier $courier)
     {
-        $this->pass("show courier");
+        $this->pass('show courier');
 
         if ($this->user->cannot('show courier', Courier::class)) {
             return abort(403);
@@ -63,9 +62,9 @@ class CourierController extends Controller
         return Inertia::render('courier/show', [
             'courier' => $courier,
             'permissions' => [
-                'canUpdate' => $this->user->can("update courier"),
-                'canDelete' => $this->user->can("delete courier"),
-            ]
+                'canUpdate' => $this->user->can('update courier'),
+                'canDelete' => $this->user->can('delete courier'),
+            ],
         ]);
     }
 
@@ -74,7 +73,7 @@ class CourierController extends Controller
      */
     public function update(UpdateCourierRequest $request, Courier $courier)
     {
-        $this->pass("update courier");
+        $this->pass('update courier');
 
         $data = $request->validated();
         $courier->update($data);
@@ -85,7 +84,7 @@ class CourierController extends Controller
      */
     public function destroy(Courier $courier)
     {
-        $this->pass("delete courier");
+        $this->pass('delete courier');
 
         $courier->delete();
     }
@@ -95,7 +94,7 @@ class CourierController extends Controller
      */
     public function bulkUpdate(BulkUpdateCourierRequest $request)
     {
-        $this->pass("update courier");
+        $this->pass('update courier');
 
         $data = $request->validated();
         Courier::whereIn('id', $data['courier_ids'])->update($data);
@@ -106,13 +105,9 @@ class CourierController extends Controller
      */
     public function bulkDelete(BulkDeleteCourierRequest $request)
     {
-        $this->pass("delete courier");
+        $this->pass('delete courier');
 
         $data = $request->validated();
         Courier::whereIn('id', $data['courier_ids'])->delete();
     }
-
-    
-    
-    
 }

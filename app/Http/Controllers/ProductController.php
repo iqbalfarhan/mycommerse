@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteProductRequest;
+use App\Http\Requests\BulkUpdateProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Http\Requests\BulkUpdateProductRequest;
-use App\Http\Requests\BulkDeleteProductRequest;
+use App\Http\Requests\UploadProductMediaRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Requests\UploadProductMediaRequest;
-
 
 class ProductController extends Controller
 {
@@ -20,11 +19,11 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $this->pass("index product");
-        
+        $this->pass('index product');
+
         $data = Product::query()
             ->with(['media', 'category'])
-            ->when($request->name, function($q, $v){
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
@@ -33,11 +32,11 @@ class ProductController extends Controller
             'query' => $request->input(),
             'categories' => Category::get(),
             'permissions' => [
-                'canAdd' => $this->user->can("create product"),
-                'canShow' => $this->user->can("show product"),
-                'canUpdate' => $this->user->can("update product"),
-                'canDelete' => $this->user->can("delete product"),
-            ]
+                'canAdd' => $this->user->can('create product'),
+                'canShow' => $this->user->can('show product'),
+                'canUpdate' => $this->user->can('update product'),
+                'canDelete' => $this->user->can('delete product'),
+            ],
         ]);
     }
 
@@ -46,7 +45,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $this->pass("create product");
+        $this->pass('create product');
 
         $data = $request->validated();
         Product::create($data);
@@ -57,7 +56,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $this->pass("show product");
+        $this->pass('show product');
 
         if ($this->user->cannot('show product', Product::class)) {
             return abort(403);
@@ -67,9 +66,9 @@ class ProductController extends Controller
             'product' => $product->load(['media', 'category']),
             'categories' => Category::get(),
             'permissions' => [
-                'canUpdate' => $this->user->can("update product"),
-                'canDelete' => $this->user->can("delete product"),
-            ]
+                'canUpdate' => $this->user->can('update product'),
+                'canDelete' => $this->user->can('delete product'),
+            ],
         ]);
     }
 
@@ -78,7 +77,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $this->pass("update product");
+        $this->pass('update product');
 
         $data = $request->validated();
         $product->update($data);
@@ -89,7 +88,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->pass("delete product");
+        $this->pass('delete product');
 
         $product->delete();
     }
@@ -99,7 +98,7 @@ class ProductController extends Controller
      */
     public function bulkUpdate(BulkUpdateProductRequest $request)
     {
-        $this->pass("update product");
+        $this->pass('update product');
 
         $data = $request->validated();
         Product::whereIn('id', $data['product_ids'])->update($data);
@@ -110,7 +109,7 @@ class ProductController extends Controller
      */
     public function bulkDelete(BulkDeleteProductRequest $request)
     {
-        $this->pass("delete product");
+        $this->pass('delete product');
 
         $data = $request->validated();
         Product::whereIn('id', $data['product_ids'])->delete();
@@ -121,7 +120,7 @@ class ProductController extends Controller
      */
     public function archived()
     {
-        $this->pass("archived product");
+        $this->pass('archived product');
 
         return Inertia::render('product/archived', [
             'products' => Product::onlyTrashed()->get(),
@@ -133,7 +132,7 @@ class ProductController extends Controller
      */
     public function restore($id)
     {
-        $this->pass("restore product");
+        $this->pass('restore product');
 
         $model = Product::onlyTrashed()->findOrFail($id);
         $model->restore();
@@ -144,18 +143,18 @@ class ProductController extends Controller
      */
     public function forceDelete($id)
     {
-        $this->pass("force delete product");
+        $this->pass('force delete product');
 
         $model = Product::onlyTrashed()->findOrFail($id);
         $model->forceDelete();
     }
-    
+
     /**
      * Register media conversions.
      */
     public function uploadMedia(UploadProductMediaRequest $request, Product $product)
     {
-        $this->pass("update product");
+        $this->pass('update product');
 
         $data = $request->validated();
         $product->addMedia($data['file'])->toMediaCollection();

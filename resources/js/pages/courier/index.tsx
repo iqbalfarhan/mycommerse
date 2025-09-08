@@ -8,14 +8,13 @@ import AppLayout from '@/layouts/app-layout';
 import { SharedData } from '@/types';
 import { Courier } from '@/types/courier';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, FolderArchive, Image, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
+import CourierBulkDeleteDialog from './components/courier-bulk-delete-dialog';
+import CourierBulkEditSheet from './components/courier-bulk-edit-sheet';
 import CourierDeleteDialog from './components/courier-delete-dialog';
 import CourierFilterSheet from './components/courier-filter-sheet';
 import CourierFormSheet from './components/courier-form-sheet';
-import CourierBulkEditSheet from './components/courier-bulk-edit-sheet';
-import CourierBulkDeleteDialog from './components/courier-bulk-delete-dialog';
-import CourierUploadMediaSheet from './components/courier-upload-sheet';
 
 type Props = {
   couriers: Courier[];
@@ -42,7 +41,6 @@ const CourierList: FC<Props> = ({ couriers, query }) => {
               </Button>
             </CourierFormSheet>
           )}
-          
         </>
       }
     >
@@ -119,7 +117,7 @@ const CourierList: FC<Props> = ({ couriers, query }) => {
                     </Label>
                   </Button>
                 </TableCell>
-                <TableCell>{ courier.name }</TableCell>
+                <TableCell>{courier.name}</TableCell>
                 <TableCell>
                   {permissions?.canShow && (
                     <Button variant={'ghost'} size={'icon'}>
@@ -130,7 +128,6 @@ const CourierList: FC<Props> = ({ couriers, query }) => {
                   )}
                   {permissions?.canUpdate && (
                     <>
-                      
                       <CourierFormSheet purpose="edit" courier={courier}>
                         <Button variant={'ghost'} size={'icon'}>
                           <Edit />

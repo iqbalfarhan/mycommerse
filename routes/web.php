@@ -1,22 +1,19 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CourierController;
-use App\Http\Controllers\TransactionController;
-
-
-
-
+use App\Http\Controllers\ReviewController;
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
@@ -56,6 +53,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('transaction/bulk', [TransactionController::class, 'bulkUpdate'])->name('transaction.bulk.update');
     Route::delete('transaction/bulk', [TransactionController::class, 'bulkDelete'])->name('transaction.bulk.destroy');
     Route::apiResource('transaction', TransactionController::class);
+    Route::resource('order', OrderController::class);
+    Route::put('review/bulk', [ReviewController::class, 'bulkUpdate'])->name('review.bulk.update');
+    Route::delete('review/bulk', [ReviewController::class, 'bulkDelete'])->name('review.bulk.destroy');
+    Route::apiResource('review', ReviewController::class);
 });
 
 require __DIR__.'/settings.php';

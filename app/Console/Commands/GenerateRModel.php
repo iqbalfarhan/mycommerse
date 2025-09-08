@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+
 use function Laravel\Prompts\multiselect;
-use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\textarea;
 
@@ -66,7 +66,7 @@ class GenerateRModel extends Command
             '--fields' => implode(',', $fields),
             '--media' => $media,
         ]);
-        
+
         $this->info("🎨 Running generate:rview {$name} ...");
         $this->call('generate:rview', [
             'name' => $name,

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Product;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('dashboard/index');
+        return Inertia::render('dashboard/index', [
+            'products' => Product::get()
+        ]);
     }
 
     public function documentation()

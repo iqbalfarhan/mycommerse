@@ -9,10 +9,10 @@ type Props = {
 const TransactionStatusBadge: FC<Props> = ({ status }) => {
   return (
     <>
-      {status === 'pending' && <Badge variant="outline">Waiting for payment</Badge>}
-      {status === 'shipping' && <Badge variant="default">Shipped</Badge>}
-      {status === 'delivered' && <Badge variant="default">Delivered</Badge>}
-      {status === 'cancelled' && <Badge variant="destructive">Cancelled</Badge>}
+      {status === 'pending' && <Badge variant="warning">Menuggu pembayaran</Badge>}
+      {status === 'shipping' && <Badge variant="info">Dalam pengiriman</Badge>}
+      {status === 'delivered' && <Badge variant="success">Sudah diterima</Badge>}
+      {status === 'cancelled' && <Badge variant="destructive">Dibatalkan</Badge>}
     </>
   );
 };
