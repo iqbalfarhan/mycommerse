@@ -40,17 +40,17 @@ class Transaction extends Model implements HasMedia
         'paid' => 'boolean',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function courier()
+    public function courier(): BelongsTo
     {
         return $this->belongsTo(Courier::class);
     }
 
-    public function review()
+    public function review(): HasOne
     {
         return $this->hasOne(Review::class);
     }
