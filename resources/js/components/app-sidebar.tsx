@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Bike, BookOpen, Box, Database, Grid2X2Check, KeySquare, LayoutGrid, ShoppingCart, Users, Wallet } from 'lucide-react';
+import { Bike, BookOpen, Box, Database, Grid2X2Check, KeySquare, LayoutGrid, ShoppingCart, Star, Users, Wallet } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -86,6 +86,12 @@ export function AppSidebar() {
               title: 'Shipping courier',
               href: route('courier.index'),
               icon: Bike,
+              available: menus.courier,
+            },
+            {
+              title: 'Review produk',
+              href: route('review.index'),
+              icon: Star,
               available: menus.courier,
             },
           ]}

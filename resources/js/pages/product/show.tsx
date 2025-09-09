@@ -103,9 +103,15 @@ const ShowProduct: FC<Props> = ({ product, permissions }) => {
               <div className="flex items-center">
                 <Button onClick={() => setQty(qty - 1)} disabled={qty === 1} variant={'outline'} size={'icon'} children={<Minus />} />
                 <Button size={'icon'} disabled variant={'ghost'} children={qty} />
-                <Button onClick={() => setQty(qty + 1)} disabled={qty === product.stock} variant={'outline'} size={'icon'} children={<Plus />} />
+                <Button
+                  onClick={() => setQty(qty + 1)}
+                  disabled={qty === product.stock || product.stock === 0}
+                  variant={'outline'}
+                  size={'icon'}
+                  children={<Plus />}
+                />
               </div>
-              <Button onClick={() => addToCart(product, qty)}>
+              <Button onClick={() => addToCart(product, qty)} disabled={qty === 0 || product.stock === 0}>
                 <ShoppingCart />
                 Add {qty} item to cart
               </Button>

@@ -16,14 +16,14 @@ class OrderController extends Controller
         $this->pass('index transaction');
 
         $data = Transaction::query()
-            ->with(['user', 'courier'])
+            ->with(['media', 'user', 'courier'])
             ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             })
             ->orderBy('created_at', 'desc');
 
-        return Inertia::render('transaction/index', [
-            'transactions' => $data->get(),
+        return Inertia::render('order/index', [
+            'orders' => $data->get(),
             'query' => $request->input(),
             'statusLists' => Transaction::$statusLists,
             'permissions' => [

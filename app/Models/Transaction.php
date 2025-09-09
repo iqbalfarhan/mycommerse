@@ -40,17 +40,21 @@ class Transaction extends Model implements HasMedia
         'paid' => 'boolean',
     ];
 
-    public function user(): BelongsTo
+    public $appends = [
+        'code',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function courier(): BelongsTo
+    public function courier()
     {
         return $this->belongsTo(Courier::class);
     }
 
-    public function review(): HasOne
+    public function review()
     {
         return $this->hasOne(Review::class);
     }
@@ -60,5 +64,10 @@ class Transaction extends Model implements HasMedia
         $this->addMediaConversion('preview')
             ->fit(Fit::Contain, 300, 300)
             ->nonQueued();
+    }
+
+    public function getCodeAttribute()
+    {
+        return $this->created_at->format('YmdHis');
     }
 }

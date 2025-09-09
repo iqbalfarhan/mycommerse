@@ -2,51 +2,54 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Transaction } from '@/types/transaction';
-import { CheckCheck, CopySlash, LogIn, LucideIcon, Pickaxe, Sailboat } from 'lucide-react';
+import { Box, Car, CheckCheck, Image, LogIn, LucideIcon } from 'lucide-react';
 import { FC } from 'react';
+import TransactionUploadMediaSheet from './transaction-upload-media-sheet';
 
 type Props = {
-  status: Transaction['status'];
+  transaction: Transaction;
 };
 
-const statusSteps: {
-  status: Transaction['status'];
+type StatusStep = {
+  status: string;
   icon: LucideIcon;
   label: string;
-}[] = [
-  {
-    status: 'pending',
-    icon: LogIn,
-    label: 'Pesanan telah dibuat',
-  },
-  {
-    status: 'pending',
-    icon: CopySlash,
-    label: 'Menunggu pembayaran',
-  },
-  {
-    status: 'shipping',
-    icon: CheckCheck,
-    label: 'Pembayaran diverifikasi',
-  },
-  {
-    status: 'shipping',
-    icon: Sailboat,
-    label: 'Pesanan dalam pengiriman',
-  },
-  {
-    status: 'delivered',
-    icon: Pickaxe,
-    label: 'Pesanan diterima',
-  },
-];
+  active: boolean;
+};
 
-// definisi urutan status
-const statusOrder: Transaction['status'][] = ['pending', 'shipping', 'delivered'];
-
-const TransactionStatusStep: FC<Props> = ({ status }) => {
-  // cari index status sekarang
-  const currentIndex = statusOrder.indexOf(status);
+const TransactionStatusStep: FC<Props> = ({ transaction }) => {
+  const statusSteps: StatusStep[] = [
+    {
+      status: 'pending',
+      icon: LogIn,
+      label: 'Pesanan telah dibuat',
+      active: ['pending', 'shipping', 'delivered'].includes(transaction.status),
+    },
+    {
+      status: 'upload',
+      icon: Image,
+      label: 'Upload bukti pembayaran',
+      active: transaction.media?.length === 0 ? false : true,
+    },
+    {
+      status: 'shipping',
+      icon: CheckCheck,
+      label: 'Pembayaran diverifikasi',
+      active: transaction.paid === true,
+    },
+    {
+      status: 'shipping',
+      icon: Car,
+      label: 'Pesanan dalam pengiriman',
+      active: ['shipping', 'delivered'].includes(transaction.status),
+    },
+    {
+      status: 'delivered',
+      icon: Box,
+      label: 'Pesanan diterima',
+      active: ['delivered'].includes(transaction.status),
+    },
+  ];
 
   return (
     <Card className="break-inside-avoid">
@@ -57,16 +60,22 @@ const TransactionStatusStep: FC<Props> = ({ status }) => {
       <Separator />
       <CardContent className="flex flex-col">
         {statusSteps.map((step, idx) => {
-          const stepIndex = statusOrder.indexOf(step.status);
-          const isActive = stepIndex <= currentIndex;
-
+          if (step.status === 'upload') {
+            return (
+              <TransactionUploadMediaSheet transaction={transaction}>
+                <Button
+                  key={idx}
+                  variant={'ghost'}
+                  className={`justify-start ${step.active ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}
+                >
+                  <step.icon className="mr-2 h-4 w-4" />
+                  {step.label}
+                </Button>
+              </TransactionUploadMediaSheet>
+            );
+          }
           return (
-            <Button
-              key={idx}
-              variant={'ghost'}
-              className={`justify-start ${isActive ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}
-              disabled={true}
-            >
+            <Button key={idx} variant={'ghost'} className={`justify-start ${step.active ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}>
               <step.icon className="mr-2 h-4 w-4" />
               {step.label}
             </Button>

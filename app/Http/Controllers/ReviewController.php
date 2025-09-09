@@ -20,7 +20,7 @@ class ReviewController extends Controller
         $this->pass('index review');
 
         $data = Review::query()
-            // ->with(['media'])
+            ->with(['user', 'transaction'])
             ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });

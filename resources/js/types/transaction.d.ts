@@ -13,6 +13,7 @@ export type TransactionItem = {
 export type Transaction = {
   id: number;
   user_id: User['id'];
+  code: string;
   user: User;
   courier_id: Courier['id'];
   courier: Courier;

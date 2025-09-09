@@ -5,14 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Plus, Star, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import ReviewBulkDeleteDialog from './components/review-bulk-delete-dialog';
 import ReviewBulkEditSheet from './components/review-bulk-edit-sheet';
-import ReviewDeleteDialog from './components/review-delete-dialog';
 import ReviewFilterSheet from './components/review-filter-sheet';
 import ReviewFormSheet from './components/review-form-sheet';
 
@@ -93,7 +93,9 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
               </Button>
             </TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Transaction</TableHead>
+            <TableHead>Comment</TableHead>
+            <TableHead>Rating</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -117,31 +119,17 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                     </Label>
                   </Button>
                 </TableCell>
-                <TableCell>{review.name}</TableCell>
+                <TableCell>{review.user.name}</TableCell>
                 <TableCell>
-                  {permissions?.canShow && (
-                    <Button variant={'ghost'} size={'icon'}>
-                      <Link href={route('review.show', review.id)}>
-                        <Folder />
-                      </Link>
-                    </Button>
-                  )}
-                  {permissions?.canUpdate && (
-                    <>
-                      <ReviewFormSheet purpose="edit" review={review}>
-                        <Button variant={'ghost'} size={'icon'}>
-                          <Edit />
-                        </Button>
-                      </ReviewFormSheet>
-                    </>
-                  )}
-                  {permissions?.canDelete && (
-                    <ReviewDeleteDialog review={review}>
-                      <Button variant={'ghost'} size={'icon'}>
-                        <Trash2 />
-                      </Button>
-                    </ReviewDeleteDialog>
-                  )}
+                  <Link href={route('transaction.show', review.transaction_id)}>{review.transaction.code}</Link>
+                </TableCell>
+                <TableCell>{review.comment}</TableCell>
+                <TableCell>
+                  <div className="flex">
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <Star key={index} size={18} className={cn('stroke-warning', index < review.rating ? 'fill-warning' : '')} />
+                    ))}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

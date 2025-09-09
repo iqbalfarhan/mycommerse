@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { dateDFY, formatRupiah, strLimit } from '@/lib/utils';
+import { dateFull, formatRupiah, strLimit } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Transaction } from '@/types/transaction';
 import { Link, usePage } from '@inertiajs/react';
@@ -16,8 +16,6 @@ import { FC, useState } from 'react';
 import TransactionBulkDeleteDialog from './components/transaction-bulk-delete-dialog';
 import TransactionBulkEditSheet from './components/transaction-bulk-edit-sheet';
 import TransactionFilterSheet from './components/transaction-filter-sheet';
-import TransactionFormSheet from './components/transaction-form-sheet';
-import TransactionPaidStatusBadge from './components/transaction-paid-status-badge';
 import TransactionStatusBadge from './components/transaction-status-badge';
 
 type Props = {
@@ -82,7 +80,6 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
               </Button>
             </TableHead>
             <TableHead>Items</TableHead>
-            <TableHead>Paid</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Total Price</TableHead>
             <TableHead>Actions</TableHead>
@@ -113,7 +110,7 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                   <Link href={route('transaction.show', transaction.id)} className="flex flex-col gap-4 transition-all hover:opacity-75">
                     <Button variant={'ghost'} size={'sm'} className="justify-start" disabled>
                       <Calendar1 />
-                      {dateDFY(transaction.created_at)}
+                      {dateFull(transaction.created_at)}
                     </Button>
                     {transaction.items.map((item, index) => (
                       <div key={index} className="flex gap-4">
@@ -130,12 +127,8 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                     ))}
                   </Link>
                 </TableCell>
-
                 <TableCell>
-                  <TransactionPaidStatusBadge paid={transaction.paid} />
-                </TableCell>
-                <TableCell>
-                  <TransactionStatusBadge status={transaction.status} />
+                  <TransactionStatusBadge transaction={transaction} />
                 </TableCell>
                 <TableCell>{formatRupiah(Number(transaction.total_price))}</TableCell>
                 <TableCell>
@@ -145,15 +138,6 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                         <Folder />
                       </Link>
                     </Button>
-                  )}
-                  {permissions?.canUpdate && (
-                    <>
-                      <TransactionFormSheet purpose="edit" transaction={transaction}>
-                        <Button variant={'ghost'} size={'icon'}>
-                          <Edit />
-                        </Button>
-                      </TransactionFormSheet>
-                    </>
                   )}
                 </TableCell>
               </TableRow>

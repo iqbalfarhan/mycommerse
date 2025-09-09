@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Requests\UploadTransactionMediaRequest;
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class TransactionController extends Controller
         $this->pass('index transaction');
 
         $data = Transaction::query()
-            ->with(['user', 'courier'])
+            ->with(['media', 'user', 'courier'])
             ->whereUserId($this->user->id)
             ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
@@ -70,6 +71,10 @@ class TransactionController extends Controller
         $transaction = DB::transaction(function () use ($data) {
             $transaction = Transaction::create($data);
             Cart::whereIn('id', $data['cart_ids'])->delete();
+
+            foreach ($data['items'] as $item) {
+                Product::find($item['product_id'])->decrement('stock', $item['quantity']);
+            }
 
             return $transaction;
         });
