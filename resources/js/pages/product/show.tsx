@@ -1,11 +1,12 @@
 import MarkdownReader from '@/components/markdown-reader';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { em, formatRupiah } from '@/lib/utils';
+import { em, formatRupiah, numberTrim } from '@/lib/utils';
 import { Product } from '@/types/product';
 import { router } from '@inertiajs/react';
 import { Edit, Image, Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
@@ -88,6 +89,7 @@ const ShowProduct: FC<Props> = ({ product, permissions }) => {
             <CardHeader>
               <CardDescription>{product.category.name}</CardDescription>
               <CardTitle className="text-3xl leading-normal">{product.name}</CardTitle>
+              <Badge variant={'secondary'}>{numberTrim(product.stock)} ready stock</Badge>
             </CardHeader>
             <CardContent>
               <MarkdownReader content={product.description} />

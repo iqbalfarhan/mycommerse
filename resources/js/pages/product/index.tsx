@@ -28,7 +28,7 @@ type Props = {
 const ProductList: FC<Props> = ({ products, query }) => {
   const [ids, setIds] = useState<number[]>([]);
   const [cari, setCari] = useState('');
-  const [view, setView] = useState<'grid' | 'table'>('grid');
+  const [view, setView] = useState<'grid' | 'table'>('table');
 
   const { permissions } = usePage<SharedData>().props;
 

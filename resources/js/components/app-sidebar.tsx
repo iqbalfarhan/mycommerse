@@ -29,7 +29,7 @@ export function AppSidebar() {
   } = usePage<SharedData & { menus: Record<string, boolean> }>().props;
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

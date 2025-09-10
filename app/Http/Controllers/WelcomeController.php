@@ -24,4 +24,11 @@ class WelcomeController extends BaseController
             'content' => file_get_contents(base_path('README.md')),
         ]);
     }
+
+    public function team()
+    {
+        return Inertia::render('welcome/team', [
+            'content' => file_get_contents(base_path('README.md')),
+        ]);
+    }
 }

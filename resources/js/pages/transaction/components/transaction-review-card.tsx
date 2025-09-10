@@ -60,14 +60,21 @@ const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
         <CardTitle>Review</CardTitle>
         <CardDescription>Review kamu tentang barang kami</CardDescription>
       </CardHeader>
-      <Separator />
       <CardContent className="space-y-6">
         {/* Review Text */}
-        <FormControl label="Review">
-          <Textarea placeholder="Tulis review anda..." value={data.comment} onChange={(e) => setData('comment', e.target.value)} />
+        <FormControl>
+          <Textarea
+            placeholder="Tulis review anda..."
+            value={data.comment}
+            onChange={(e) => setData('comment', e.target.value)}
+            className="min-h-32"
+          />
         </FormControl>
 
         {/* Rating */}
+      </CardContent>
+      <Separator />
+      <CardFooter className="flex justify-between">
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, index) => {
             const value = index + 1;
@@ -81,15 +88,12 @@ const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
                   onChange={() => setData('rating', value as number)}
                   className="hidden"
                 />
-                <Star className={`text-lg ${data.rating >= value ? 'fill-warning stroke-warning' : 'text-warning'}`} />
+                <Star size={18} className={`${data.rating >= value ? 'fill-warning stroke-warning' : 'text-warning'}`} />
               </label>
             );
           })}
         </div>
-      </CardContent>
-      <Separator />
-      <CardFooter>
-        <SubmitButton onClick={handleSubmit} loading={processing} label="Kirim review" icon={Send} />
+        <SubmitButton onClick={handleSubmit} loading={processing} label="Simpan" icon={Send} />
       </CardFooter>
     </Card>
   );

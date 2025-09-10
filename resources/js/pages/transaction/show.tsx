@@ -6,6 +6,7 @@ import TransactionDeliveredAction from './components/transaction-delivered-actio
 import TransactionItemCard from './components/transaction-item-card';
 import TransactionPaymentCard from './components/transaction-payment.card';
 import TransactionReviewCard from './components/transaction-review-card';
+import TransactionShippingCard from './components/transaction-shipping-card';
 import TransactionStatusStep from './components/transaction-status-steps';
 
 type Props = {
@@ -18,6 +19,7 @@ const ShowTransaction: FC<Props> = ({ transaction }) => {
       <div className="columns-1 gap-6 space-y-6 lg:columns-2 xl:columns-3">
         <TransactionStatusStep transaction={transaction} />
         <TransactionDeliveredAction transaction={transaction} />
+        <TransactionShippingCard transaction={transaction} />
         <TransactionItemCard items={transaction.items} />
         <TransactionBuyerInfoCard user={transaction.user} />
         <TransactionPaymentCard transaction={transaction} />

@@ -1,4 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
+import { Card, CardContent } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
@@ -26,7 +27,9 @@ export default function AuthSimpleLayout({ children, title, description }: Props
               <p className="text-center text-sm text-muted-foreground">{description}</p>
             </div>
           </div>
-          {children}
+          <Card>
+            <CardContent>{children}</CardContent>
+          </Card>
         </div>
       </div>
     </div>

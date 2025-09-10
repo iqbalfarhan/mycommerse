@@ -58,13 +58,14 @@ const TransactionStatusStep: FC<Props> = ({ transaction }) => {
         <CardDescription>Log status pengiriman</CardDescription>
       </CardHeader>
       <Separator />
-      <CardContent className="flex flex-col">
+      <CardContent className="flex flex-col space-y-1">
         {statusSteps.map((step, idx) => {
           if (step.status === 'upload') {
             return (
               <TransactionUploadMediaSheet transaction={transaction}>
                 <Button
                   key={idx}
+                  size={'lg'}
                   variant={'ghost'}
                   className={`justify-start ${step.active ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}
                 >
@@ -75,7 +76,12 @@ const TransactionStatusStep: FC<Props> = ({ transaction }) => {
             );
           }
           return (
-            <Button key={idx} variant={'ghost'} className={`justify-start ${step.active ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}>
+            <Button
+              size={'lg'}
+              key={idx}
+              variant={'ghost'}
+              className={`justify-start ${step.active ? 'bg-success/10 text-success' : 'text-muted-foreground'}`}
+            >
               <step.icon className="mr-2 h-4 w-4" />
               {step.label}
             </Button>

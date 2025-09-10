@@ -92,7 +92,7 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                 </Label>
               </Button>
             </TableHead>
-            <TableHead>Name</TableHead>
+            <TableHead>Customer</TableHead>
             <TableHead>Transaction</TableHead>
             <TableHead>Comment</TableHead>
             <TableHead>Rating</TableHead>
@@ -121,9 +121,13 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                 </TableCell>
                 <TableCell>{review.user.name}</TableCell>
                 <TableCell>
-                  <Link href={route('transaction.show', review.transaction_id)}>{review.transaction.code}</Link>
+                  <Link href={route('transaction.show', review.transaction_id)}>
+                    <Badge variant={'secondary'}>{review.transaction.code}</Badge>
+                  </Link>
                 </TableCell>
-                <TableCell>{review.comment}</TableCell>
+                <TableCell>
+                  <p className="max-w-96 leading-normal text-wrap">{review.comment}</p>
+                </TableCell>
                 <TableCell>
                   <div className="flex">
                     {Array.from({ length: 5 }, (_, index) => (
